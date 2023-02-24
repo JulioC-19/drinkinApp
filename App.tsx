@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {CustomTextInput} from './components/CustomTextInput';
 import {CustomButton} from './components/CustomButton';
@@ -6,7 +6,33 @@ import {CustomButton} from './components/CustomButton';
 function App() {
   const [emailInput, onChangeEmailInput] = React.useState('');
   const [passInput, onChangePassInput] = React.useState('');
+  const [isLoading, setLoading] = useState(true);
+
   const drinkingImage = './assets/drinking.png';
+
+  const getUser = async () => {
+    try {
+      const response = await fetch('https://dummyjson.com/auth/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          username: 'kminchelle',
+          password: '0lelplR',
+        }),
+      });
+      const json = await response.json();
+      console.log(json);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
     <SafeAreaView>
       <View style={styles.parentView}>
